@@ -1,0 +1,28 @@
+.Vote {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.Vote>div {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    background-color: #694966;
+    border: 5px #5c415d solid;
+}
+
+.Vote>div>p {
+    flex: 1;
+}
+
+.Vote>div:hover {
+    background-color: #74526C
+}
+
+img.garbage {
+    height: 1em;
+}

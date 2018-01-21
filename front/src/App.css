@@ -1,0 +1,26 @@
+.App {
+  height: 100%;
+  flex: 1;
+  text-align: center;
+  font-size: 10vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.main {
+  display: flex;
+  flex: 4;
+}
+
+.sidebar {
+  flex: 1;
+  font-size: 3vh;
+}
+
+.item {
+  text-align: right;
+}
+
+.item.vetoed {
+  text-decoration: line-through;
+}
