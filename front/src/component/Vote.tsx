@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import './Vote.css';
 
-import Item from '../service/Item';
+import Item from '../domain/Item';
 
 import VoteItem from './VoteItem';
 

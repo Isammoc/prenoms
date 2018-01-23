@@ -1,11 +1,22 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import App from './App';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
+import DevTools from './containers/DevTools';
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root') as HTMLElement
+// tslint:enable:no-import-side-effect
+import store from './store';
+import App from './App';
+
+const Root = (
+  <Provider store={store}>
+    <div>
+      <App />
+      <DevTools />
+    </div>
+  </Provider>
 );
+
+render(Root, document.getElementById('root'));
 registerServiceWorker();

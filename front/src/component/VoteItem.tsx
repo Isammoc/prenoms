@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Item from '../service/Item';
+import Item from '../domain/Item';
 
 interface VoteItemProps {
     item: Item;
@@ -13,7 +13,7 @@ let garbage = require('./garbage.svg');
 export default class VoteItem extends React.Component<VoteItemProps, {}> {
     render() {
         let vetoButton;
-        if (this.props.item.better.length === 0 && this.props.item.lesser.length === 0) {
+        if (this.props.item.vetoable) {
             vetoButton =  (
                 <img
                     src={garbage}
