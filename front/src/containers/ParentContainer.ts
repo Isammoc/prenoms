@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { whoIam, AppAction } from '../actions';
-import { Login } from '../component/Login';
+import { ParentComponent } from '../component/ParentComponent';
 
 const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => {
     return {
@@ -10,9 +10,9 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => {
     };
 };
 
-const VisibleLogin = connect(
+const ParentContainer = connect(
     null,
     mapDispatchToProps
-)(Login);
+)(ParentComponent);
 
-export default VisibleLogin;
+export default ParentContainer;

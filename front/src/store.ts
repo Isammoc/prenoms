@@ -2,8 +2,6 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import RootState from './domain/RootState';
 
-import DevTools from './containers/DevTools';
-
 import rootReducer from './reducers';
 
 const composeEnhancers = (
@@ -18,8 +16,7 @@ function configureStore(initialState?: RootState) {
   ];
   // compose enhancers
   const enhancer = composeEnhancers(
-    applyMiddleware(...middlewares),
-    DevTools.instrument()
+    applyMiddleware(...middlewares)
   );
   // create store
   return createStore(

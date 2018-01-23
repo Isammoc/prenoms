@@ -3,18 +3,14 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
-import DevTools from './containers/DevTools';
 
 // tslint:enable:no-import-side-effect
 import store from './store';
-import App from './App';
+import AppContainer from './containers/AppContainer';
 
 const Root = (
   <Provider store={store}>
-    <div>
-      <App />
-      <DevTools />
-    </div>
+    <AppContainer />
   </Provider>
 );
 
