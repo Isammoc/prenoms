@@ -1,8 +1,8 @@
-import { WHOAMI, WhoIAm } from '../actions/parent';
+import { LOGIN, Login } from '../actions/login';
 
-export const parentReducers = (state: string|null = null, action: WhoIAm) => {
+export const parentReducers = (state: string|null = null, action: Login) => {
     switch (action.type) {
-        case WHOAMI:
+        case LOGIN:
           return action.parent;
         default:
           return state;
