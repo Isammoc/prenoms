@@ -5,6 +5,7 @@
   font-size: 10vh;
   display: flex;
   flex-direction: row;
+  background-color: #777;
 }
 
 .main {
@@ -15,12 +16,4 @@
 .sidebar {
   flex: 1;
   font-size: 3vh;
-}
-
-.item {
-  text-align: right;
-}
-
-.item.vetoed {
-  text-decoration: line-through;
 }

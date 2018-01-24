@@ -6,16 +6,28 @@ interface ParentProps {
 }
 
 export const ParentComponent: React.SFC<ParentProps> = props => (
-  <div className="main" style={{display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}>
+  <div className="main" style={{display: 'flex', justifyContent: 'center'}}>
     <div
-      style={{display: 'flex', backgroundColor: 'red', cursor: 'pointer'}}
+      style={{
+        display: 'flex',
+        flex: 1,
+        cursor: 'pointer',
+        flexDirection: 'column'}}
       onClick={(e) => {e.preventDefault(); props.onFather(); }}
-    >Father
+    >
+      <img src={require('./father.svg')} />
+      <p>Papa</p>
     </div>
     <div
-      style={{display: 'flex', backgroundColor: 'red', cursor: 'pointer'}}
+      style={{
+        display: 'flex',
+        flex: 1,
+        cursor: 'pointer',
+        flexDirection: 'column'}}
       onClick={(e) => {e.preventDefault(); props.onMother(); }}
-    >Mother
+    >
+      <img src={require('./mother.svg')} />
+      <p>Maman</p>
     </div>
   </div>
 );
