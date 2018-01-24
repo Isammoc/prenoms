@@ -1,9 +1,9 @@
-import { Dispatch } from 'redux';
+import { Dispatch, AnyAction } from 'redux';
 import { connect } from 'react-redux';
-import { whoIam, AppAction } from '../actions';
+import { whoIam } from '../actions/creators';
 import { ParentComponent } from '../component/ParentComponent';
 
-const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => {
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => {
     return {
         onMother: () => {dispatch(whoIam('Mother')); },
         onFather: () => {dispatch(whoIam('Father')); },

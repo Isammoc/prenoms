@@ -1,6 +1,6 @@
-import { WHOAMI, WhoIAmAction } from '../actions';
+import { WHOAMI, WhoIAm } from '../actions/parent';
 
-export const parentReducers = (state: string|null = null, action: WhoIAmAction) => {
+export const parentReducers = (state: string|null = null, action: WhoIAm) => {
     switch (action.type) {
         case WHOAMI:
           return action.parent;
