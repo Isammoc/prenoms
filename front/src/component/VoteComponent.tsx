@@ -9,14 +9,23 @@ import VoteItem from './VoteItem';
 interface VoteProps {
     a: Item;
     b: Item;
-    select(i: Item): void;
-    reject(i: Item): void;
+    onSelect(i: Item): void;
+    onReject(i: Item): void;
+    onLoad(): void;
 }
 
-const VoteComponent: React.SFC<VoteProps> = props => (
-  <div className="Vote">
-    <VoteItem item={props.a} select={props.select} reject={props.reject} />
-    <VoteItem item={props.b} select={props.select} reject={props.reject} />
-  </div>
-);
+class VoteComponent extends React.Component<VoteProps, {}> {
+  componentDidMount() {
+    this.props.onLoad();
+  }
+
+  render() {
+    return (
+      <div className="Vote">
+        <VoteItem item={this.props.a} select={this.props.onSelect} reject={this.props.onReject} />
+        <VoteItem item={this.props.b} select={this.props.onSelect} reject={this.props.onReject} />
+      </div>
+    );
+  }
+}
 export default VoteComponent;

@@ -5,5 +5,5 @@ export default class RootState {
     readonly vote: {
         itemA: Item,
         itemB: Item,
-    };
+    } | null;
 }

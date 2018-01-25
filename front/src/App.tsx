@@ -1,8 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import ParentContainer from './containers/ParentContainer';
-import VoteComponent from './component/VoteComponent';
-import Item from './domain/Item';
+import VoteContainer from './containers/VoteContainer';
 
 interface AppProps {
   logged: boolean;
@@ -16,12 +15,7 @@ const App: React.SFC<AppProps> = props => (
     }}
   >
     {props.logged ?
-      <VoteComponent
-        a={new Item(0, 'Dessus', false)}
-        b={new Item(1, 'Dessous', false)}
-        select={(i) => {return; }}
-        reject={(i) => {return; }}
-      /> : <ParentContainer />}
+      <VoteContainer /> : <ParentContainer />}
   </div>
 );
 

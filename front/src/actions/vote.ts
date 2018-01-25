@@ -1,6 +1,6 @@
 import Item from '../domain/Item';
 import RootState from '../domain/RootState';
-import { Action } from 'redux';
+import { Action, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import voteService from '../service/VoteService';
@@ -52,16 +52,24 @@ export function newVoteSuccess(itemA: Item, itemB: Item): NewVote  {
     };
 }
 
-export function vote(a: number, b: number): ThunkAction<void, RootState, void> {
+const newVote = (dispatch: Dispatch<RootState>, getState: () => RootState) => {
+    dispatch(newVoteRequest());
+    setTimeout(
+        () => {
+            const [itemA, itemB] = voteService.newVote()
+                .map(v => new Item(v.id, v.value, v.lesser.length === 0 && v.better.length === 0));
+            dispatch(newVoteSuccess(itemA, itemB));
+        },
+        1000);
+};
+
+export function firstVote(): ThunkAction<void, RootState, void> {
+    return newVote;
+}
+
+export function vote(a: number): ThunkAction<void, RootState, void> {
     return (dispatch, getState) => {
-        dispatch(newVoteRequest());
-        setTimeout(
-            () => {
-                const [itemA, itemB] = voteService.newVote()
-                    .map(v => new Item(v.id, v.value, v.lesser.length === 0 && v.better.length === 0));
-                dispatch(newVoteSuccess(itemA, itemB));
-            },
-            1000);
+        newVote(dispatch, getState);
     };
 }
 
@@ -91,6 +99,7 @@ export function reject(id: number): ThunkAction<void, RootState, void> {
                 const item = voteService.currentStatus().find(i => i.id === id);
                 if (item !== undefined) {
                     voteService.reject(item);
+                    newVote(dispatch, getState);
                 }
             },
             1000);
