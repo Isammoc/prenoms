@@ -1,6 +1,6 @@
 import { VoteServiceState, ServiceItem } from './vote.service.domain';
 
-import { INTERNAL_REJECT, INTERNAL_SUBMIT_VOTE, InternalAction } from './vote.service.action';
+import { INTERNAL_REJECT, INTERNAL_SUBMIT_VOTE, InternalAction, InternalVote } from './vote.service.action';
 import { Reject } from '../actions/vote.action';
 
 const firstnameList = [
@@ -19,7 +19,8 @@ const firstnameList = [
     'Prenom5',
 ];
 
-const initial: VoteServiceState = firstnameList.map((value, id) => new ServiceItem(id, value, [], [], false));
+const initial: VoteServiceState = firstnameList
+        .map((value, id) => new ServiceItem(id, value, new Set(), new Set(), false));
 
 export function voteServiceReducer(state: VoteServiceState = initial, action: InternalAction) {
     switch (action.type) {
@@ -33,11 +34,27 @@ export function voteServiceReducer(state: VoteServiceState = initial, action: In
                 }
             });
         case INTERNAL_SUBMIT_VOTE:
-            // const a = (action as InternalVote).a;
-            // const b = (action as InternalVote).b;
+            const a = (action as InternalVote).a;
+            const b = (action as InternalVote).b;
             
-            // XXX
+            const itemA = state.find((item) => item.id === a)!;
+            const itemB = state.find((item) => item.id === b)!;
 
+            return state.map((item) => {
+                if (item.id === a) {
+                    const lesser = new Set(item.lesser);
+                    lesser.add(b);
+                    itemB.lesser.forEach((i) => lesser.add(i));
+                    return new ServiceItem(item.id, item.value, item.better, lesser, item.veto);
+                } else if (item.id === b) {
+                    const better = new Set(item.better);
+                    better.add(a);
+                    itemA.better.forEach((i) => better.add(i));
+                    return new ServiceItem(item.id, item.value, better, item.lesser, item.veto);
+                } else {
+                    return item;
+                }
+            });
         default:
             return state;
     }

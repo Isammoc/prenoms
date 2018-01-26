@@ -6,10 +6,10 @@ export class VoteService {
 
     const a = possible
         .reduce((result, current) => {
-            if (current.lesser.length + current.better.length < result.lesser.length + result.better.length) {
+            if (current.lesser.size + current.better.size < result.lesser.size + result.better.size) {
                 return current;
             } else if (
-                current.lesser.length + current.better.length === result.lesser.length + result.better.length
+                current.lesser.size + current.better.size === result.lesser.size + result.better.size
                 && current.id < result.id
             ) {
                 return current;
@@ -21,13 +21,13 @@ export class VoteService {
     const b = possible
         .filter((item) => 
             item.id !== a.id
-            && a.lesser.indexOf(item.id) === -1
-            && a.better.indexOf(item.id) === -1
+            && !a.lesser.has(item.id)
+            && !a.better.has(item.id)
         ).reduce((result, current) => {
-            if (current.lesser.length + current.better.length < result.lesser.length + result.better.length) {
+            if (current.lesser.size + current.better.size < result.lesser.size + result.better.size) {
                 return current;
             } else if (
-                current.lesser.length + current.better.length === result.lesser.length + result.better.length
+                current.lesser.size + current.better.size === result.lesser.size + result.better.size
                 && current.id < result.id
             ) {
                 return current;

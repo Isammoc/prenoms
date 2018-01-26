@@ -58,7 +58,7 @@ const newVote = (dispatch: Dispatch<RootState>, getState: () => RootState) => {
     setTimeout(
         () => {
             const [itemA, itemB] = voteService.newVote(getState().internal)
-                .map(v => new Item(v.id, v.value, v.lesser.length === 0 && v.better.length === 0));
+                .map(v => new Item(v.id, v.value, v.lesser.size === 0 && v.better.size === 0));
             dispatch(newVoteSuccess(itemA, itemB));
         },
         400);
