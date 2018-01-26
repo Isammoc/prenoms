@@ -4,6 +4,7 @@ import { Action, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import voteService from '../service/VoteService';
+import { internalReject, internalVote } from '../service/vote.service.action';
 
 export const SUBMIT_VOTE_REQUEST = 'SUBMIT_VOTE_REQUEST';
 export const SUBMIT_VOTE_FAILURE = 'SUBMIT_VOTE_FAILURE';
@@ -56,11 +57,11 @@ const newVote = (dispatch: Dispatch<RootState>, getState: () => RootState) => {
     dispatch(newVoteRequest());
     setTimeout(
         () => {
-            const [itemA, itemB] = voteService.newVote()
+            const [itemA, itemB] = voteService.newVote(getState().internal)
                 .map(v => new Item(v.id, v.value, v.lesser.length === 0 && v.better.length === 0));
             dispatch(newVoteSuccess(itemA, itemB));
         },
-        1000);
+        400);
 };
 
 export function firstVote(): ThunkAction<void, RootState, void> {
@@ -69,6 +70,13 @@ export function firstVote(): ThunkAction<void, RootState, void> {
 
 export function vote(a: number): ThunkAction<void, RootState, void> {
     return (dispatch, getState) => {
+        let b;
+        if ( getState().vote!.itemA.id === a) {
+            b = getState().vote!.itemB.id;
+        } else {
+            b = getState().vote!.itemA.id;
+        }
+        dispatch(internalVote(a, b));
         newVote(dispatch, getState);
     };
 }
@@ -96,13 +104,11 @@ export function reject(id: number): ThunkAction<void, RootState, void> {
         dispatch(rejectRequest(id));
         setTimeout(
             () => {
-                const item = voteService.currentStatus().find(i => i.id === id);
-                if (item !== undefined) {
-                    voteService.reject(item);
-                    newVote(dispatch, getState);
-                }
+                dispatch(internalReject(id));
+                dispatch(rejectSuccess());
+                newVote(dispatch, getState);
             },
-            1000);
+            400);
     };
 }
 

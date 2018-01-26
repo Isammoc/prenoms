@@ -5,13 +5,14 @@ import App from '../App';
 import RootState from '../domain/RootState';
 
 const mapStateToProps = (state: RootState) => {
-    return {
-        logged: state.whoami !== null
-    };
+  return {
+    logged: state.whoami !== null,
+    hasVote: state.vote !== null,
+  };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => {
-    return {};
+  return {};
 };
 
 const AppContainer = connect(

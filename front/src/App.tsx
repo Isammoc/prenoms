@@ -5,18 +5,27 @@ import VoteContainer from './containers/VoteContainer';
 
 interface AppProps {
   logged: boolean;
+  hasVote: boolean;
 }
 
-const App: React.SFC<AppProps> = props => (
-  <div
-    className="App"
-    style={{
-      display: 'flex',
-    }}
-  >
-    {props.logged ?
-      <VoteContainer /> : <ParentContainer />}
-  </div>
-);
+const App: React.SFC<AppProps> = props => {
+  
+  let toDisplay;
+  if (!props.logged) {
+    toDisplay = (<ParentContainer />);
+  } else if (props.hasVote) {
+    toDisplay = (<VoteContainer />);
+  }
+  return  (
+    <div
+      className="App"
+      style={{
+        display: 'flex',
+      }}
+    >
+      {toDisplay}
+    </div>
+  );
+};
 
 export default App;

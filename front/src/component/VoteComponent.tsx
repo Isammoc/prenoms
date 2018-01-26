@@ -11,21 +11,12 @@ interface VoteProps {
     b: Item;
     onSelect(i: Item): void;
     onReject(i: Item): void;
-    onLoad(): void;
 }
 
-class VoteComponent extends React.Component<VoteProps, {}> {
-  componentDidMount() {
-    this.props.onLoad();
-  }
-
-  render() {
-    return (
-      <div className="Vote">
-        <VoteItem item={this.props.a} select={this.props.onSelect} reject={this.props.onReject} />
-        <VoteItem item={this.props.b} select={this.props.onSelect} reject={this.props.onReject} />
-      </div>
-    );
-  }
-}
+const VoteComponent: React.SFC<VoteProps> = props => (
+  <div className="Vote">
+    <VoteItem item={props.a} select={props.onSelect} reject={props.onReject} />
+    <VoteItem item={props.b} select={props.onSelect} reject={props.onReject} />
+  </div>
+);
 export default VoteComponent;

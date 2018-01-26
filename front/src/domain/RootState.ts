@@ -1,4 +1,5 @@
 import Item from './Item';
+import { VoteServiceState } from '../service/vote.service.domain';
 
 export default class RootState {
     readonly whoami: string | null;
@@ -6,4 +7,5 @@ export default class RootState {
         itemA: Item,
         itemB: Item,
     } | null;
+    readonly internal: VoteServiceState;
 }
