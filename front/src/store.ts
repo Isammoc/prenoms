@@ -1,13 +1,29 @@
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware, compose, Reducer } from 'redux';
 import thunk from 'redux-thunk';
+
+import * as Immutable from 'immutable';
+
 import RootState from './domain/RootState';
 
 import rootReducer from './reducers';
 
-const composeEnhancers = (
+// const composeEnhancers = (
+//   process.env.NODE_ENV === 'development' &&
+//   window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+//     serialize: {
+//       immutable: Immutable
+//     }
+//  })) || compose;
+
+const composeEnhancers =
   process.env.NODE_ENV === 'development' &&
-  window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-) || compose;
+  typeof window === 'object' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      serialize: {
+        immutable: Immutable
+      }
+    }) : compose;
 
 function configureStore(initialState?: RootState) {
   // configure middlewares
@@ -19,11 +35,19 @@ function configureStore(initialState?: RootState) {
     applyMiddleware(...middlewares)
   );
   // create store
-  return createStore(
+  const internalStore = createStore(
     rootReducer,
-    initialState!,
+    initialState,
     enhancer
   );
+
+  if (module.hot) {
+    module.hot.accept('./reducers', () => {
+      internalStore.replaceReducer(require('./reducers') as Reducer<RootState>);
+    });
+  }
+
+  return internalStore;
 }
 
 // pass an optional param to rehydrate state on app start

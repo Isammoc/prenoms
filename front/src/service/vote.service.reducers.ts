@@ -1,3 +1,5 @@
+import * as Immutable from 'immutable';
+
 import { VoteServiceState, ServiceItem } from './vote.service.domain';
 
 import { INTERNAL_REJECT, INTERNAL_SUBMIT_VOTE, InternalAction, InternalVote } from './vote.service.action';
@@ -20,7 +22,7 @@ const firstnameList = [
 ];
 
 const initial: VoteServiceState = firstnameList
-        .map((value, id) => new ServiceItem(id, value, new Set(), new Set(), false));
+        .map((value, id) => new ServiceItem(id, value, Immutable.Set(), Immutable.Set(), false));
 
 export function voteServiceReducer(state: VoteServiceState = initial, action: InternalAction) {
     switch (action.type) {
@@ -42,14 +44,10 @@ export function voteServiceReducer(state: VoteServiceState = initial, action: In
 
             return state.map((item) => {
                 if (item.id === a) {
-                    const lesser = new Set(item.lesser);
-                    lesser.add(b);
-                    itemB.lesser.forEach((i) => lesser.add(i));
+                    const lesser = itemB.lesser.add(b).union(item.lesser);
                     return new ServiceItem(item.id, item.value, item.better, lesser, item.veto);
                 } else if (item.id === b) {
-                    const better = new Set(item.better);
-                    better.add(a);
-                    itemA.better.forEach((i) => better.add(i));
+                    const better = itemA.better.add(a).union(item.better);
                     return new ServiceItem(item.id, item.value, better, item.lesser, item.veto);
                 } else {
                     return item;

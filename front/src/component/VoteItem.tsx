@@ -18,15 +18,20 @@ export default class VoteItem extends React.Component<VoteItemProps, {}> {
                 <img
                     src={garbage}
                     onClick={(e) => this.props.reject(this.props.item)}
+                    style={{ cursor: 'pointer'}}
                     className="garbage"
                     alt="veto"
                 />
             );
         }
         return (
-            <div>
-                <div className="vote" onClick={(e) => this.props.select(this.props.item)}>
-                    <p>{this.props.item.value}</p>
+            <div style={{ display: 'flex' }}>
+                <div
+                    className="vote"
+                    onClick={(e) => this.props.select(this.props.item)}
+                    style={{ flex: 1, cursor: 'pointer' }}
+                >
+                    <p style={{ textAlign: 'left' }}>{this.props.item.value}</p>
                 </div>
                 {vetoButton}
             </div>
