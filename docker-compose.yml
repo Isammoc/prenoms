@@ -1,10 +1,38 @@
 version: "3"
+
 services:
+  web:
+    image: nginx
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+    ports:
+      - 80:80
+      - 3000:3000
+    links:
+      - front
+      - back
+
   front:
     image: node
     working_dir: /code
     volumes:
       - ./front:/code
-    ports:
-      - 3000:3000
     command: yarn start
+
+  back:
+    image: openjdk
+    volumes:
+      - ./back:/code
+      - /root/.ivy2
+      - /root/.sbt
+    working_dir: /code
+    command: /code/sbt ~run
+    links:
+      - db:prenoms-db
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=prenoms
+      - POSTGRES_PASSWORD=prenoms
+      - POSTGRES_DB=prenoms
