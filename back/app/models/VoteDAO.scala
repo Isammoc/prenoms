@@ -35,7 +35,7 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
     }
   }
 
-  def newVote(who: Int): Future[Option[(Item, Item)]] =
+  def newVote(who: Int): Future[Option[Vote]] =
     first(who).flatMap {
       case Some(a) =>
         println(a)
@@ -46,7 +46,7 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
           } yield (f, c)).sortBy(_._1.id).sortBy(_._2).result.headOption
         }).map {
           case Some((b, cc)) =>
-            Some((a, Item(b.id, b.content, cc == 0)))
+            Some(Vote(a, Item(b.id, b.content, cc == 0)))
           case None => None
         }
       case None => Future.successful(None)
@@ -55,6 +55,20 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
   def veto(id: Long) = db.run {
     Preferences.filter(p => p.better === id || p.lesser === id).delete andThen
       SimpleItems.filter(_.id === id).map(_.vetoed).update(true)
+  }
+
+  def vote(who: Int, better: Long, lesser: Long) = db.run {
+    val q1 = (for {
+      p <- Preferences if p.who === who && p.better === lesser
+    } yield (who, better, p.lesser))
+    val q2 = (for {
+      p <- Preferences if p.who === who && p.lesser === better
+    } yield (who, p.better, lesser))
+    DBIO.seq(
+      Preferences += Preference(who, better, lesser),
+      Preferences.map(_.tuple).forceInsertQuery(q1),
+      Preferences.map(_.tuple).forceInsertQuery(q2)
+    )
   }
 
   private class SimpleItemsTable(tag: Tag) extends Table[SimpleItem](tag, "item") {
@@ -69,7 +83,8 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
     def who = column[Int]("who")
     def better = column[Long]("better")
     def lesser = column[Long]("lesser")
+    def tuple = (who, better, lesser)
 
-    def * = (who, better, lesser) <> (Preference.tupled, Preference.unapply)
+    def * = tuple <> (Preference.tupled, Preference.unapply)
   }
 }

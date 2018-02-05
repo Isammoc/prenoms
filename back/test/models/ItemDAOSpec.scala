@@ -19,7 +19,7 @@ class DBSpec extends PlaySpec with GuiceOneAppPerSuite {
       Evolutions.applyEvolutions(databaseApi.database("default"))
 
       1 mustBe 1
-      val coucou = await(voteDAO.newVote())
+      val coucou = await(voteDAO.newVote(0))
       println(coucou)
     }
   }
