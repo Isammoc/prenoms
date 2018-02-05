@@ -4,7 +4,8 @@
 
 CREATE TABLE item (
   id       SERIAL  PRIMARY KEY,
-  content  VARCHAR(256) NOT NULL UNIQUE
+  content  VARCHAR(256) NOT NULL UNIQUE,
+  vetoed   BOOLEAN DEFAULT false
 );
 
 INSERT INTO 
@@ -33,5 +34,5 @@ CREATE TABLE preference (
 
 # --- !Downs
 
-DROP TABLE item;
 DROP TABLE preference;
+DROP TABLE item;

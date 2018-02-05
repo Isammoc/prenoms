@@ -3,4 +3,5 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-GET / controllers.AppController.vote
+GET /:who/vote controllers.AppController.vote(who: Int)
+POST /:who/veto/:id controllers.AppController.veto(who: Int, id: Long)

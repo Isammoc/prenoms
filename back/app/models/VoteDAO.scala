@@ -10,7 +10,7 @@ import scala.concurrent.Future
 import javax.inject.Singleton
 
 case class Item(id: Long, content: String, vetoable: Boolean)
-case class SimpleItem(id: Long, content: String)
+case class SimpleItem(id: Long, content: String, vetoed: Boolean)
 case class Preference(who: Int, better: Long, lesser: Long)
 case class Vote(a: Item, b: Item)
 
@@ -21,24 +21,28 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
   private val SimpleItems = TableQuery[SimpleItemsTable]
   private val Preferences = TableQuery[PreferencesTable]
 
-  private def first(): Future[Option[Item]] = db.run {
+  private val nonVetoedItem = SimpleItems.filterNot(_.vetoed)
+  
+  private def myPreferences(who: Int) = Preferences.filter(_.who === who)
+
+  private def first(who: Int): Future[Option[Item]] = db.run {
     (for {
-      f <- SimpleItems
-      c = Preferences.filter(c => c.better === f.id || c.lesser === f.id).length
+      f <- nonVetoedItem
+      c = myPreferences(who).filter(c => c.better === f.id || c.lesser === f.id).length
     } yield (f, c)).sortBy(_._1.id).sortBy(_._2).result.headOption.map {
       case Some((f, cc)) => Some(Item(f.id, f.content, cc == 0))
       case None => None
     }
   }
 
-  def newVote(): Future[Option[(Item, Item)]] =
-    first.flatMap {
+  def newVote(who: Int): Future[Option[(Item, Item)]] =
+    first(who).flatMap {
       case Some(a) =>
         println(a)
         (db.run {
           (for {
-            (f,d) <- SimpleItems joinLeft (Preferences.filter(_.better === a.id).map(_.lesser) union Preferences.filter(_.lesser === a.id).map(_.better)) if d.isEmpty if f.id =!= a.id
-            c = Preferences.filter(c => c.better === f.id || c.lesser === f.id).length
+            (f, d) <- nonVetoedItem joinLeft (myPreferences(who).filter(_.better === a.id).map(_.lesser) union myPreferences(who).filter(_.lesser === a.id).map(_.better)) if d.isEmpty if f.id =!= a.id
+            c = myPreferences(who).filter(c => c.better === f.id || c.lesser === f.id).length
           } yield (f, c)).sortBy(_._1.id).sortBy(_._2).result.headOption
         }).map {
           case Some((b, cc)) =>
@@ -48,11 +52,17 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
       case None => Future.successful(None)
     }
 
+  def veto(id: Long) = db.run {
+    Preferences.filter(p => p.better === id || p.lesser === id).delete andThen
+      SimpleItems.filter(_.id === id).map(_.vetoed).update(true)
+  }
+
   private class SimpleItemsTable(tag: Tag) extends Table[SimpleItem](tag, "item") {
     def id = column[Long]("id", O.PrimaryKey)
     def content = column[String]("content", O.Unique)
+    def vetoed = column[Boolean]("vetoed")
 
-    def * = (id, content) <> (SimpleItem.tupled, SimpleItem.unapply)
+    def * = (id, content, vetoed) <> (SimpleItem.tupled, SimpleItem.unapply)
   }
 
   private class PreferencesTable(tag: Tag) extends Table[Preference](tag, "preference") {
