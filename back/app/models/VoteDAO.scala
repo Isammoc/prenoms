@@ -22,7 +22,7 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
   private val Preferences = TableQuery[PreferencesTable]
 
   private val nonVetoedItem = SimpleItems.filterNot(_.vetoed)
-  
+
   private def myPreferences(who: Int) = Preferences.filter(_.who === who)
 
   private def first(who: Int): Future[Option[Item]] = db.run {
@@ -35,13 +35,15 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
     }
   }
 
+  private def nonPossibleFirstname(who: Int, firstId: Long) = myPreferences(who).filter(_.better === firstId).map(_.lesser) union myPreferences(who).filter(_.lesser === firstId).map(_.better)
+
   def newVote(who: Int): Future[Option[Vote]] =
     first(who).flatMap {
       case Some(a) =>
         println(a)
         (db.run {
           (for {
-            (f, d) <- nonVetoedItem joinLeft (myPreferences(who).filter(_.better === a.id).map(_.lesser) union myPreferences(who).filter(_.lesser === a.id).map(_.better)) if d.isEmpty if f.id =!= a.id
+            f <- nonVetoedItem if f.id =!= a.id if !(f.id in nonPossibleFirstname(who, a.id))
             c = myPreferences(who).filter(c => c.better === f.id || c.lesser === f.id).length
           } yield (f, c)).sortBy(_._1.id).sortBy(_._2).result.headOption
         }).map {
@@ -61,14 +63,15 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
     val q1 = (for {
       p <- Preferences if p.who === who && p.better === lesser
     } yield (who, better, p.lesser))
+
     val q2 = (for {
       p <- Preferences if p.who === who && p.lesser === better
     } yield (who, p.better, lesser))
+
     DBIO.seq(
       Preferences += Preference(who, better, lesser),
       Preferences.map(_.tuple).forceInsertQuery(q1),
-      Preferences.map(_.tuple).forceInsertQuery(q2)
-    )
+      Preferences.map(_.tuple).forceInsertQuery(q2))
   }
 
   private class SimpleItemsTable(tag: Tag) extends Table[SimpleItem](tag, "item") {
