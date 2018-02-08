@@ -3,8 +3,6 @@ import RootState from '../domain/RootState';
 import { Action, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { AnyAction } from 'redux';
-import voteService from '../service/VoteService';
-import { internalReject, internalVote } from '../service/vote.service.action';
 
 export const SUBMIT_VOTE_REQUEST = 'SUBMIT_VOTE_REQUEST';
 export const SUBMIT_VOTE_FAILURE = 'SUBMIT_VOTE_FAILURE';
@@ -55,13 +53,16 @@ export function newVoteSuccess(itemA: Item, itemB: Item): NewVote  {
 
 const newVote = (dispatch: Dispatch<RootState>, getState: () => RootState) => {
     dispatch(newVoteRequest());
-    setTimeout(
-        () => {
-            const [itemA, itemB] = voteService.newVote(getState().internal)
-                .map(v => new Item(v.id, v.value, v.lesser.size === 0 && v.better.size === 0));
-            dispatch(newVoteSuccess(itemA, itemB));
-        },
-        400);
+
+    const who = getState().whoami === 'Father' ? 1 : 0;
+
+    fetch('/api/' + who + '/vote').then((res: Response) => {
+        res.json().then((json) => 
+            dispatch(newVoteSuccess(
+                new Item(json.a.id, json.a.content, json.a.vetoable),
+                new Item(json.b.id, json.b.content, json.b.vetoable)
+            ))).catch((e) => dispatch(newVoteFailure(e)));
+    }).catch((e) => dispatch(newVoteFailure(e)));
 };
 
 export function firstVote(): ThunkAction<void, RootState, void> {
@@ -76,8 +77,22 @@ export function vote(a: number): ThunkAction<void, RootState, void> {
         } else {
             b = getState().vote!.itemA.id;
         }
-        dispatch(internalVote(a, b));
-        newVote(dispatch, getState);
+
+        const who = getState().whoami === 'Father' ? 1 : 0;
+
+        dispatch(newVoteRequest());
+
+        fetch('/api/' + who + '/vote', {
+            method: 'POST',
+            body: JSON.stringify({
+                better: a,
+                lesser: b
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then((res) => newVote(dispatch, getState))
+            .catch(e => dispatch(newVoteFailure(e)));
     };
 }
 
@@ -102,13 +117,12 @@ export function rejectSuccess(): Action {
 export function reject(id: number): ThunkAction<void, RootState, void> {
     return (dispatch, getState) => {
         dispatch(rejectRequest(id));
-        setTimeout(
-            () => {
-                dispatch(internalReject(id));
+        const who = getState().whoami === 'Father' ? 1 : 0;
+        fetch('/api/' + who + '/veto/' + id)
+            .then((res) => {
                 dispatch(rejectSuccess());
                 newVote(dispatch, getState);
-            },
-            400);
+            }).catch((e) => dispatch(rejectFailure(e)));
     };
 }
 
