@@ -6,7 +6,7 @@ import { voteReducer } from '../vote/vote.reducer';
 import { resultReducer } from '../result/result.reducer';
 import { errorReducer } from './error.reducers';
 import { pendingReducer } from './pending.reducers';
-import { whereReducer } from './where.reducers';
+import { navigationReducer } from '../navigation/navigation.reducer';
 
 const rootReducer: Reducer<RootState> = combineReducers( {
     login: loginReducer,
@@ -14,7 +14,7 @@ const rootReducer: Reducer<RootState> = combineReducers( {
     result: resultReducer,
     error: errorReducer,
     pending: pendingReducer,
-    where: whereReducer,
+    where: navigationReducer,
 });
 
 export default rootReducer;

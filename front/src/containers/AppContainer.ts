@@ -10,7 +10,7 @@ const mapStateToProps = (state: RootState) => {
     hasVote: state.vote !== null,
     error: state.error,
     pending: state.pending,
-    where: state.where,
+    where: state.page,
   };
 };
 

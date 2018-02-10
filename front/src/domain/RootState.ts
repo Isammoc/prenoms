@@ -10,5 +10,5 @@ export default class RootState {
     readonly result: Result | null;
     readonly error: boolean;
     readonly pending: boolean;
-    readonly where: string;
+    readonly page: string;
 }

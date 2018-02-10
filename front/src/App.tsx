@@ -8,7 +8,7 @@ import { ErrorComponent } from './component/ErrorComponent';
 import { PendingComponent } from './component/PendingComponent';
 import { ResultComponent } from './result/result.component';
 
-import { WHERE_RESULT, WHERE_VOTE } from './actions/where.actions';
+import { PAGE_RESULT, PAGE_VOTE } from './navigation/navigation.action';
 
 interface AppProps {
   logged: boolean;
@@ -29,10 +29,10 @@ const App: React.SFC<AppProps> = props => {
     toDisplay = (<LoginContainer />);
   } else {
     switch (props.where) {
-      case WHERE_RESULT:
+      case PAGE_RESULT:
         toDisplay = (<ResultComponent />);
         break;
-      case WHERE_VOTE:
+      case PAGE_VOTE:
       default:
         if (props.hasVote) {
           toDisplay = (<VoteContainer />);
