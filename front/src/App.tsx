@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
 
-import ParentContainer from './containers/ParentContainer';
+import LoginContainer from './login/login.container';
 import VoteContainer from './vote/vote.container';
 
 import { ErrorComponent } from './component/ErrorComponent';
@@ -26,7 +26,7 @@ const App: React.SFC<AppProps> = props => {
   if (props.error) {
     toDisplay = (<ErrorComponent />);
   } else if (!props.logged) {
-    toDisplay = (<ParentContainer />);
+    toDisplay = (<LoginContainer />);
   } else {
     switch (props.where) {
       case WHERE_RESULT:

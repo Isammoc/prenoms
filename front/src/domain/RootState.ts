@@ -2,7 +2,7 @@ import Item from '../vote/item/voteItem.domain';
 import Result from './Result';
 
 export default class RootState {
-    readonly whoami: string | null;
+    readonly login: string | null;
     readonly vote: {
         itemA: Item,
         itemB: Item,

@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { login } from '../actions/login.action';
-import { ParentComponent } from '../component/ParentComponent';
+import { login } from './login.action';
+import { LoginComponent } from './login.component';
 import RootState from '../domain/RootState';
 
 const mapStateToProps = (state: RootState) => {
@@ -16,9 +16,9 @@ const mapDispatchToProps = (dispatch: Dispatch<RootState>) => {
     };
 };
 
-const ParentContainer = connect(
+const LoginContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ParentComponent);
+)(LoginComponent);
 
-export default ParentContainer;
+export default LoginContainer;

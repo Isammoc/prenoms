@@ -6,7 +6,7 @@ import RootState from '../domain/RootState';
 
 const mapStateToProps = (state: RootState) => {
   return {
-    logged: state.whoami !== null,
+    logged: state.login !== null,
     hasVote: state.vote !== null,
     error: state.error,
     pending: state.pending,

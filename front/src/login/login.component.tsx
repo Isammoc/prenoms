@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-interface ParentProps {
+interface LoginProps {
     onFather: () => void;
     onMother: () => void;
 }
 
-export const ParentComponent: React.SFC<ParentProps> = props => (
+export const LoginComponent: React.SFC<LoginProps> = props => (
   <div className="main" style={{display: 'flex', justifyContent: 'center'}}>
     <div
       style={{

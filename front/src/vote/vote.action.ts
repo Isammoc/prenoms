@@ -54,7 +54,7 @@ export function newVoteSuccess(itemA: Item, itemB: Item): NewVote  {
 const newVote = (dispatch: Dispatch<RootState>, getState: () => RootState) => {
     dispatch(newVoteRequest());
 
-    const who = getState().whoami === 'Father' ? 1 : 0;
+    const who = getState().login === 'Father' ? 1 : 0;
 
     fetch('/api/' + who + '/vote').then((res: Response) => {
         res.json().then((json) => 
@@ -78,7 +78,7 @@ export function vote(a: number): ThunkAction<void, RootState, void> {
             b = getState().vote!.itemA.id;
         }
 
-        const who = getState().whoami === 'Father' ? 1 : 0;
+        const who = getState().login === 'Father' ? 1 : 0;
 
         dispatch(newVoteRequest());
 
@@ -117,7 +117,7 @@ export function rejectSuccess(): Action {
 export function reject(id: number): ThunkAction<void, RootState, void> {
     return (dispatch, getState) => {
         dispatch(rejectRequest(id));
-        const who = getState().whoami === 'Father' ? 1 : 0;
+        const who = getState().login === 'Father' ? 1 : 0;
         fetch('/api/' + who + '/veto/' + id, {
             method: 'POST'
         }).then((res) => {
