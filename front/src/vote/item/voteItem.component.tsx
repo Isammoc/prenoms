@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Item from '../domain/Item';
+import Item from './voteItem.domain';
 
 interface VoteItemProps {
     item: Item;

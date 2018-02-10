@@ -1,12 +1,12 @@
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import { reject, vote } from '../actions/vote.action';
+import { reject, vote } from './vote.action';
 
-import VoteComponent from '../component/VoteComponent';
+import VoteComponent from './vote.component';
 
 import RootState from '../domain/RootState';
-import Item from '../domain/Item';
+import Item from './item/voteItem.domain';
 
 const mapStateToProps = (state: RootState) => {
     return {

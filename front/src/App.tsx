@@ -2,7 +2,7 @@ import * as React from 'react';
 import './App.css';
 
 import ParentContainer from './containers/ParentContainer';
-import VoteContainer from './containers/VoteContainer';
+import VoteContainer from './vote/vote.container';
 
 import { ErrorComponent } from './component/ErrorComponent';
 import { PendingComponent } from './component/PendingComponent';

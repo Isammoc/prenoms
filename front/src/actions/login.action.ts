@@ -2,7 +2,7 @@ import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import RootState from '../domain/RootState';
-import { firstVote } from './vote.action';
+import { firstVote } from '../vote/vote.action';
 
 export const LOGIN = 'LOGIN';
 

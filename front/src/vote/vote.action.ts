@@ -1,4 +1,4 @@
-import Item from '../domain/Item';
+import Item from './item/voteItem.domain';
 import RootState from '../domain/RootState';
 import { Action, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';

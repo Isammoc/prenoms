@@ -6,7 +6,7 @@ import {
     SUBMIT_VOTE_FAILURE,
     NEW_VOTE_FAILURE,
     REJECT_FAILURE,
-} from '../actions/vote.action';
+} from '../vote/vote.action';
 
 export const errorReducer: Reducer<boolean> =
     (

@@ -1,4 +1,4 @@
-import Item from './Item';
+import Item from '../vote/item/voteItem.domain';
 import Result from './Result';
 
 export default class RootState {

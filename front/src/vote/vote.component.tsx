@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import './Vote.css';
+import './vote.component.css';
 
-import Item from '../domain/Item';
+import Item from './item/voteItem.domain';
 
-import VoteItem from './VoteItem';
+import VoteItem from './item/voteItem.component';
 
 interface VoteProps {
     a: Item;

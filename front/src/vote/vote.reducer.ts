@@ -12,9 +12,9 @@ import {
     REJECT_FAILURE,
     REJECT_SUCCESS,
     NewVote,
-  } from '../actions/vote.action';
+  } from './vote.action';
 
-import CurrentVote from '../domain/CurrentVote';
+import CurrentVote from './vote.domain';
 
 export const voteReducer: Reducer<CurrentVote | null> =
   (
