@@ -1,4 +1,5 @@
 import Item from './Item';
+import Result from './Result';
 
 export default class RootState {
     readonly whoami: string | null;
@@ -6,4 +7,7 @@ export default class RootState {
         itemA: Item,
         itemB: Item,
     } | null;
+    readonly result: Result | null;
+    readonly error: boolean;
+    readonly pending: boolean;
 }

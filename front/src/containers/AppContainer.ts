@@ -8,6 +8,8 @@ const mapStateToProps = (state: RootState) => {
   return {
     logged: state.whoami !== null,
     hasVote: state.vote !== null,
+    error: state.error,
+    pending: state.pending,
   };
 };
 

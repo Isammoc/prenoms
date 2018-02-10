@@ -4,5 +4,5 @@ import App from './App';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<App logged={true} hasVote={true} />, div);
+  ReactDOM.render(<App logged={true} hasVote={true} error={false} pending={false} />, div);
 });

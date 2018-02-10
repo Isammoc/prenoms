@@ -14,6 +14,9 @@ case class SimpleItem(id: Long, content: String, vetoed: Boolean)
 case class Preference(who: Int, better: Long, lesser: Long)
 case class Vote(a: Item, b: Item)
 
+case class OneResult(during: Boolean, best: Seq[SimpleItem])
+case class Result(father: OneResult, mother: OneResult)
+
 @Singleton
 class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)(implicit executionContet: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
@@ -61,11 +64,11 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
 
   def vote(who: Int, better: Long, lesser: Long) = db.run {
     val q1 = (for {
-      p <- Preferences if p.who === who && p.better === lesser
+      p <- Preferences if p.who === who && p.better === lesser if !((myPreferences(who).filter(pp => pp.better === p.better && pp.lesser === p.lesser).exists))
     } yield (who, better, p.lesser))
 
     val q2 = (for {
-      p <- Preferences if p.who === who && p.lesser === better
+      p <- Preferences if p.who === who && p.lesser === better if !((myPreferences(who).filter(pp => pp.better === p.better && pp.lesser === p.lesser).exists))
     } yield (who, p.better, lesser))
 
     DBIO.seq(
@@ -73,6 +76,26 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
       Preferences.map(_.tuple).forceInsertQuery(q1),
       Preferences.map(_.tuple).forceInsertQuery(q2))
   }
+
+  def oneBest(who: Int) = db.run {
+    (for {
+      f <- nonVetoedItem
+      better = myPreferences(who).filter(_.better === f.id).length
+      lesser = myPreferences(who).filter(_.lesser === f.id).length
+      score = better - lesser
+    } yield (f, score)).sortBy(_._2.desc).take(10).map(_._1).result
+  }
+
+  def oneResult(who: Int) = for {
+    possibleVote <- newVote(who)
+    best <- oneBest(who)
+  } yield OneResult(possibleVote.isDefined, best)
+
+  def result =
+    for {
+      mother <- oneResult(0)
+      father <- oneResult(1)
+    } yield Result(father, mother)
 
   private class SimpleItemsTable(tag: Tag) extends Table[SimpleItem](tag, "item") {
     def id = column[Long]("id", O.PrimaryKey)

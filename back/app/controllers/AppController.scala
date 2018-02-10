@@ -13,6 +13,9 @@ import play.api.libs.json.Reads
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import scala.concurrent.Future
+import models.Result
+import models.OneResult
+import models.SimpleItem
 
 class AppController @Inject() (voteDAO: VoteDAO, cc: ControllerComponents)(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
@@ -34,5 +37,19 @@ class AppController @Inject() (voteDAO: VoteDAO, cc: ControllerComponents)(impli
 
   def veto(who: Int, id: Long) = Action.async {
     voteDAO.veto(id).map(f => Ok)
+  }
+
+  def result = Action.async {
+    implicit val simpleItemWriter: Writes[SimpleItem] = si => JsString(si.content)
+    implicit val oneResultWriter: Writes[OneResult] = (
+      (__ \ "during").write[Boolean] and
+      (__ \ "best").write[Seq[SimpleItem]])(unlift(OneResult.unapply))
+    implicit val resultWriter: Writes[Result] = (
+      (__ \ "father").write[OneResult] and
+      (__ \ "mother").write[OneResult])(unlift(Result.unapply))
+
+    voteDAO.result.map { res =>
+      Ok(Json.toJson(res))
+    }
   }
 }
