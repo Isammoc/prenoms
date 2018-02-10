@@ -14,7 +14,7 @@ const rootReducer: Reducer<App> = combineReducers( {
     result: resultReducer,
     error: errorReducer,
     pending: pendingReducer,
-    where: navigationReducer,
+    page: navigationReducer,
 });
 
 export default rootReducer;

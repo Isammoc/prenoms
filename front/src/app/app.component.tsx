@@ -3,6 +3,7 @@ import './app.component.css';
 
 import LoginContainer from '../login/login.container';
 import VoteContainer from '../vote/vote.container';
+import NavigationContainer from '../navigation/navigation.container';
 
 import { ErrorComponent } from '../error/error.component';
 import { PendingComponent } from '../pending/pending.component';
@@ -30,12 +31,22 @@ const AppComponent: React.SFC<AppProps> = props => {
   } else {
     switch (props.where) {
       case PAGE_RESULT:
-        toDisplay = (<ResultComponent />);
+        toDisplay = (
+          <div style={{ display: 'flex', flex: 1 }}>
+            <NavigationContainer />
+            <ResultComponent />
+          </div>
+        );
         break;
       case PAGE_VOTE:
       default:
         if (props.hasVote) {
-          toDisplay = (<VoteContainer />);
+          toDisplay = (
+            <div style={{ display: 'flex', flex: 1 }}>
+              <NavigationContainer />
+              <VoteContainer />
+            </div>
+          );
         }
     }
   }

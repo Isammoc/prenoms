@@ -1,6 +1,6 @@
 .Vote {
   display: flex;
-  flex: 1;
+  flex: 20;
   flex-direction: column;
   justify-content: center;
 }
