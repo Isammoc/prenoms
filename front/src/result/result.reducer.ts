@@ -5,9 +5,9 @@ import {
   RESULT_FAILURE,
   RESULT_SUCCESS,
   ResultSuccess,
-} from '../actions/result.action';
+} from './result.action';
 
-import Result from '../domain/Result';
+import Result from './result.domain';
 
 export const resultReducer: Reducer<Result | null> =
   (

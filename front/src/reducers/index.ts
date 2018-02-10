@@ -3,7 +3,7 @@ import { Reducer, combineReducers } from 'redux';
 import RootState from '../domain/RootState';
 import { loginReducer } from '../login/login.reducer';
 import { voteReducer } from '../vote/vote.reducer';
-import { resultReducer } from './result.reducers';
+import { resultReducer } from '../result/result.reducer';
 import { errorReducer } from './error.reducers';
 import { pendingReducer } from './pending.reducers';
 import { whereReducer } from './where.reducers';

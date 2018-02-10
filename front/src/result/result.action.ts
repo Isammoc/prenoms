@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
-import Result from '../domain/Result';
+import Result from './result.domain';
 import RootState from '../domain/RootState';
 
 export const RESULT_REQUEST = 'RESULT_REQUEST';

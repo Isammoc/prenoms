@@ -1,5 +1,5 @@
 import Item from '../vote/item/voteItem.domain';
-import Result from './Result';
+import Result from '../result/result.domain';
 
 export default class RootState {
     readonly login: string | null;

@@ -6,7 +6,7 @@ import VoteContainer from './vote/vote.container';
 
 import { ErrorComponent } from './component/ErrorComponent';
 import { PendingComponent } from './component/PendingComponent';
-import { ResultComponent } from './component/ResultComponent';
+import { ResultComponent } from './result/result.component';
 
 import { WHERE_RESULT, WHERE_VOTE } from './actions/where.actions';
 
