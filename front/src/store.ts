@@ -3,7 +3,7 @@ import thunk from 'redux-thunk';
 
 import * as Immutable from 'immutable';
 
-import RootState from './domain/RootState';
+import App from './app/app.domain';
 
 import rootReducer from './reducers';
 
@@ -25,7 +25,7 @@ const composeEnhancers =
       }
     }) : compose;
 
-function configureStore(initialState?: RootState) {
+function configureStore(initialState?: App) {
   // configure middlewares
   const middlewares = [
     thunk,
@@ -43,7 +43,7 @@ function configureStore(initialState?: RootState) {
 
   if (module.hot) {
     module.hot.accept('./reducers', () => {
-      internalStore.replaceReducer(require('./reducers') as Reducer<RootState>);
+      internalStore.replaceReducer(require('./reducers') as Reducer<App>);
     });
   }
 

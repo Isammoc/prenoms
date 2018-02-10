@@ -1,14 +1,14 @@
 import * as React from 'react';
-import './App.css';
+import './app.component.css';
 
-import LoginContainer from './login/login.container';
-import VoteContainer from './vote/vote.container';
+import LoginContainer from '../login/login.container';
+import VoteContainer from '../vote/vote.container';
 
-import { ErrorComponent } from './error/error.component';
-import { PendingComponent } from './pending/pending.component';
-import { ResultComponent } from './result/result.component';
+import { ErrorComponent } from '../error/error.component';
+import { PendingComponent } from '../pending/pending.component';
+import { ResultComponent } from '../result/result.component';
 
-import { PAGE_RESULT, PAGE_VOTE } from './navigation/navigation.action';
+import { PAGE_RESULT, PAGE_VOTE } from '../navigation/navigation.action';
 
 interface AppProps {
   logged: boolean;
@@ -18,7 +18,7 @@ interface AppProps {
   where: string;
 }
 
-const App: React.SFC<AppProps> = props => {
+const AppComponent: React.SFC<AppProps> = props => {
 
   let pending = props.pending ? (<PendingComponent />) : undefined;
 
@@ -52,4 +52,4 @@ const App: React.SFC<AppProps> = props => {
   );
 };
 
-export default App;
+export default AppComponent;

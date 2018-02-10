@@ -1,10 +1,10 @@
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AppAction } from '../actions';
-import App from '../App';
-import RootState from '../domain/RootState';
+import AppComponent from './app.component';
+import App from './app.domain';
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = (state: App) => {
   return {
     logged: state.login !== null,
     hasVote: state.vote !== null,
@@ -21,6 +21,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AppAction>) => {
 const AppContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(App);
+)(AppComponent);
 
 export default AppContainer;

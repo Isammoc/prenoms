@@ -1,5 +1,5 @@
 import Item from './item/voteItem.domain';
-import RootState from '../domain/RootState';
+import App from '../app/app.domain';
 import { Action, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { AnyAction } from 'redux';
@@ -51,7 +51,7 @@ export function newVoteSuccess(itemA: Item, itemB: Item): NewVote  {
     };
 }
 
-const newVote = (dispatch: Dispatch<RootState>, getState: () => RootState) => {
+const newVote = (dispatch: Dispatch<App>, getState: () => App) => {
     dispatch(newVoteRequest());
 
     const who = getState().login === 'Father' ? 1 : 0;
@@ -65,11 +65,11 @@ const newVote = (dispatch: Dispatch<RootState>, getState: () => RootState) => {
     }).catch((e) => dispatch(newVoteFailure(e)));
 };
 
-export function firstVote(): ThunkAction<void, RootState, void> {
+export function firstVote(): ThunkAction<void, App, void> {
     return newVote;
 }
 
-export function vote(a: number): ThunkAction<void, RootState, void> {
+export function vote(a: number): ThunkAction<void, App, void> {
     return (dispatch, getState) => {
         let b;
         if ( getState().vote!.itemA.id === a) {
@@ -114,7 +114,7 @@ export function rejectSuccess(): Action {
     return { type: REJECT_SUCCESS };
 }
 
-export function reject(id: number): ThunkAction<void, RootState, void> {
+export function reject(id: number): ThunkAction<void, App, void> {
     return (dispatch, getState) => {
         dispatch(rejectRequest(id));
         const who = getState().login === 'Father' ? 1 : 0;

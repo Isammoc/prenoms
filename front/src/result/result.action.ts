@@ -2,7 +2,7 @@ import { Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import Result from './result.domain';
-import RootState from '../domain/RootState';
+import App from '../app/app.domain';
 
 export const RESULT_REQUEST = 'RESULT_REQUEST';
 export const RESULT_FAILURE = 'RESULT_FAILURE';
@@ -36,7 +36,7 @@ export function resultSuccess(result: Result): ResultSuccess {
     };
 }
 
-export function fetchResult(): ThunkAction<void, RootState, void> {
+export function fetchResult(): ThunkAction<void, App, void> {
     return (dispatch, getState) => {
         dispatch(resultRequest());
         fetch('/api/result').then((res) => {

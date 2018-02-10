@@ -6,7 +6,7 @@ import './index.css';
 
 // tslint:enable:no-import-side-effect
 import store from './store';
-import AppContainer from './containers/AppContainer';
+import AppContainer from './app/app.container';
 
 const Root = (
   <Provider store={store}>
