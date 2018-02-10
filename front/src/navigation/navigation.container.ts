@@ -7,6 +7,7 @@ import App from '../app/app.domain';
 const mapStateToProps = (state: App) => {
     return {
         current: state.page,
+        canVote: state.vote !== null,
     };
 };
 

@@ -3,6 +3,7 @@ import App from '../app/app.domain';
 import { Action, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { AnyAction } from 'redux';
+import { navigateToResult } from '../navigation/navigation.action';
 
 export const SUBMIT_VOTE_REQUEST = 'SUBMIT_VOTE_REQUEST';
 export const SUBMIT_VOTE_FAILURE = 'SUBMIT_VOTE_FAILURE';
@@ -61,7 +62,7 @@ const newVote = (dispatch: Dispatch<App>, getState: () => App) => {
             dispatch(newVoteSuccess(
                 new Item(json.a.id, json.a.content, json.a.vetoable),
                 new Item(json.b.id, json.b.content, json.b.vetoable)
-            ))).catch((e) => dispatch(newVoteFailure(e)));
+            ))).catch((e) => dispatch(navigateToResult()));
     }).catch((e) => dispatch(newVoteFailure(e)));
 };
 

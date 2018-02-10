@@ -4,6 +4,7 @@ import { PAGE_VOTE, PAGE_RESULT } from './navigation.action';
 
 interface NavigationProps {
     current: string;
+    canVote: boolean;
     navigate: (where: string) => void;
 }
 
@@ -12,7 +13,7 @@ const toResultImg = require('./toResult.svg');
 
 export const NavigationComponent: React.SFC<NavigationProps> = (props) => {
     let toVote;
-    if (props.current !== PAGE_VOTE) {
+    if (props.canVote && props.current !== PAGE_VOTE) {
         toVote = (
             <img
                 style={{ flex: 1 }}

@@ -1,12 +1,12 @@
 import * as Immutable from 'immutable';
 
-class OneResult {
+export class OneResult {
     readonly during: boolean;
     readonly best: Immutable.List<string>;
 
     // tslint:disable-next-line:no-any
     public static of(json: any) {
-        return new OneResult(json.during, Immutable.List.of(json.best));
+        return new OneResult(json.during, Immutable.List.of(...json.best));
     }
 
     constructor(during: boolean, best: Immutable.List<string>) {
