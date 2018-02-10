@@ -40,7 +40,6 @@ export const voteReducer: Reducer<CurrentVote | null> =
         const itemA = (action as NewVote).itemA;
         const itemB = (action as NewVote).itemB;
         return {
-            ...state,
             itemA,
             itemB,
         };

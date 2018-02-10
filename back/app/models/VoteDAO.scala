@@ -64,11 +64,11 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
 
   def vote(who: Int, better: Long, lesser: Long) = db.run {
     val q1 = (for {
-      p <- Preferences if p.who === who && p.better === lesser if !((myPreferences(who).filter(pp => pp.better === p.better && pp.lesser === p.lesser).exists))
+      p <- Preferences if p.who === who && p.better === lesser if !((myPreferences(who).filter(pp => pp.better === better && pp.lesser === p.lesser).exists))
     } yield (who, better, p.lesser))
 
     val q2 = (for {
-      p <- Preferences if p.who === who && p.lesser === better if !((myPreferences(who).filter(pp => pp.better === p.better && pp.lesser === p.lesser).exists))
+      p <- Preferences if p.who === who && p.lesser === better if !((myPreferences(who).filter(pp => pp.better === p.better && pp.lesser === lesser).exists))
     } yield (who, p.better, lesser))
 
     DBIO.seq(
@@ -83,7 +83,7 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
       better = myPreferences(who).filter(_.better === f.id).length
       lesser = myPreferences(who).filter(_.lesser === f.id).length
       score = better - lesser
-    } yield (f, score)).sortBy(_._2.desc).take(10).map(_._1).result
+    } yield (f, score)).sortBy(_._1.id).sortBy(_._2.desc).take(10).map(_._1).result
   }
 
   def oneResult(who: Int) = for {
