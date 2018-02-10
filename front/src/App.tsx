@@ -5,7 +5,7 @@ import LoginContainer from './login/login.container';
 import VoteContainer from './vote/vote.container';
 
 import { ErrorComponent } from './error/error.component';
-import { PendingComponent } from './component/PendingComponent';
+import { PendingComponent } from './pending/pending.component';
 import { ResultComponent } from './result/result.component';
 
 import { PAGE_RESULT, PAGE_VOTE } from './navigation/navigation.action';
