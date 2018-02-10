@@ -18,7 +18,10 @@ export default class VoteItem extends React.Component<VoteItemProps, {}> {
                 <img
                     src={garbage}
                     onClick={(e) => this.props.reject(this.props.item)}
-                    style={{ cursor: 'pointer'}}
+                    style={{
+                        cursor: 'pointer',
+                        padding: '1em',
+                    }}
                     className="garbage"
                     alt="veto"
                 />
