@@ -4,7 +4,7 @@ import './App.css';
 import LoginContainer from './login/login.container';
 import VoteContainer from './vote/vote.container';
 
-import { ErrorComponent } from './component/ErrorComponent';
+import { ErrorComponent } from './error/error.component';
 import { PendingComponent } from './component/PendingComponent';
 import { ResultComponent } from './result/result.component';
 

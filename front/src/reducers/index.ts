@@ -4,7 +4,7 @@ import RootState from '../domain/RootState';
 import { loginReducer } from '../login/login.reducer';
 import { voteReducer } from '../vote/vote.reducer';
 import { resultReducer } from '../result/result.reducer';
-import { errorReducer } from './error.reducers';
+import { errorReducer } from '../error/error.reducer';
 import { pendingReducer } from './pending.reducers';
 import { navigationReducer } from '../navigation/navigation.reducer';
 
