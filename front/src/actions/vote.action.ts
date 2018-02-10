@@ -118,11 +118,12 @@ export function reject(id: number): ThunkAction<void, RootState, void> {
     return (dispatch, getState) => {
         dispatch(rejectRequest(id));
         const who = getState().whoami === 'Father' ? 1 : 0;
-        fetch('/api/' + who + '/veto/' + id)
-            .then((res) => {
-                dispatch(rejectSuccess());
-                newVote(dispatch, getState);
-            }).catch((e) => dispatch(rejectFailure(e)));
+        fetch('/api/' + who + '/veto/' + id, {
+            method: 'POST'
+        }).then((res) => {
+            dispatch(rejectSuccess());
+            newVote(dispatch, getState);
+        }).catch((e) => dispatch(rejectFailure(e)));
     };
 }
 
