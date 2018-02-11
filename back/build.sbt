@@ -1,7 +1,7 @@
 name := """prenoms"""
 organization := "net.isammoc"
 
-version := "1.0.0"
+version := "1.0.1-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
