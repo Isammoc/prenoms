@@ -91,6 +91,20 @@ class VoteDAO @Inject() (protected val dbConfigProvider: DatabaseConfigProvider)
     best <- oneBest(who)
   } yield OneResult(possibleVote.isDefined, best)
 
+  def getItem(content: String): Future[Option[SimpleItem]] = db.run {
+    (for {
+      item <- SimpleItems if item.content === content
+    } yield item).result.headOption
+  }
+
+  def insertItem(content: String) = db.run {
+    SimpleItems.map(_.content) += content
+  }
+
+  def unveto(content: String) = db.run {
+    SimpleItems.filter(_.content === content).map(_.vetoed).update(false)
+  }
+
   def result =
     for {
       mother <- oneResult(0)
