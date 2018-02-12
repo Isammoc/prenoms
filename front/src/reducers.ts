@@ -7,6 +7,7 @@ import { resultReducer } from './result/result.reducer';
 import { errorReducer } from './error/error.reducer';
 import { pendingReducer } from './pending/pending.reducer';
 import { navigationReducer } from './navigation/navigation.reducer';
+import insertReducer from './insert/insert.duck';
 
 const rootReducer: Reducer<App> = combineReducers( {
     login: loginReducer,
@@ -15,6 +16,7 @@ const rootReducer: Reducer<App> = combineReducers( {
     error: errorReducer,
     pending: pendingReducer,
     page: navigationReducer,
+    insert: insertReducer,
 });
 
 export default rootReducer;

@@ -1,6 +1,13 @@
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { navigateToResult, navigateToVote, PAGE_RESULT, PAGE_VOTE } from './navigation.action';
+import {
+    navigateToResult,
+    navigateToVote,
+    PAGE_RESULT,
+    PAGE_VOTE,
+    PAGE_INSERT,
+    navigateToInsert
+} from './navigation.action';
 import { NavigationComponent } from './navigation.component';
 import App from '../app/app.domain';
 
@@ -17,6 +24,9 @@ const mapDispatchToProps = (dispatch: Dispatch<App>) => {
             switch (page) {
                 case PAGE_RESULT:
                     dispatch(navigateToResult());
+                    break;
+                case PAGE_INSERT:
+                    dispatch(navigateToInsert());
                     break;
                 case PAGE_VOTE:
                 default:

@@ -5,11 +5,12 @@ import LoginContainer from '../login/login.container';
 import VoteContainer from '../vote/vote.container';
 import NavigationContainer from '../navigation/navigation.container';
 import ResultContainer from '../result/result.container';
+import InsertContainer from '../insert/insert.container';
 
 import { ErrorComponent } from '../error/error.component';
 import { PendingComponent } from '../pending/pending.component';
 
-import { PAGE_RESULT, PAGE_VOTE } from '../navigation/navigation.action';
+import { PAGE_RESULT, PAGE_VOTE, PAGE_INSERT } from '../navigation/navigation.action';
 
 interface AppProps {
   logged: boolean;
@@ -35,6 +36,14 @@ const AppComponent: React.SFC<AppProps> = props => {
           <div style={{ display: 'flex', flex: 1 }}>
             <NavigationContainer />
             <ResultContainer />
+          </div>
+        );
+        break;
+      case PAGE_INSERT:
+        toDisplay = (
+          <div style={{ display: 'flex', flex: 1 }}>
+            <NavigationContainer />
+            <InsertContainer />
           </div>
         );
         break;

@@ -4,6 +4,7 @@ export const NAVIGATION = 'NAVIGATION';
 
 export const PAGE_VOTE = 'VOTE';
 export const PAGE_RESULT = 'RESULT';
+export const PAGE_INSERT = 'INSERT';
 
 export interface Navigate extends Action {
     where: string;
@@ -17,11 +18,15 @@ function navigate(page: string) {
 }
 
 export function navigateToVote() {
-    return navigate('VOTE');
+    return navigate(PAGE_VOTE);
 }
 
 export function navigateToResult() {
-    return navigate('RESULT');
+    return navigate(PAGE_RESULT);
+}
+
+export function navigateToInsert() {
+    return navigate(PAGE_INSERT);
 }
 
 export type NavigationAction = Navigate;
