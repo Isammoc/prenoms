@@ -10,3 +10,5 @@ POST    /:who/vote           controllers.AppController.postVote(who: Int)
 POST    /:who/veto/:id       controllers.AppController.veto(who: Int, id: Long)
 
 GET     /result              controllers.AppController.result
+
+POST    /items               controllers.AppController.insertItem

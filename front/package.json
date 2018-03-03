@@ -1,6 +1,6 @@
 {
   "name": "prenoms",
-  "version": "1.0.1-SNAPSHOT",
+  "version": "1.1.0-SNAPSHOT",
   "private": true,
   "dependencies": {
     "immutable": "^3.8.2",

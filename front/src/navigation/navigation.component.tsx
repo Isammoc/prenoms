@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { PAGE_VOTE, PAGE_RESULT } from './navigation.action';
+import { PAGE_VOTE, PAGE_RESULT, PAGE_INSERT } from './navigation.action';
 
 interface NavigationProps {
     current: string;
@@ -10,13 +10,14 @@ interface NavigationProps {
 
 const toVoteImg = require('./toVote.svg');
 const toResultImg = require('./toResult.svg');
+const toInsertImg = require('./toInsert.svg');
 
 export const NavigationComponent: React.SFC<NavigationProps> = (props) => {
     let toVote;
     if (props.canVote && props.current !== PAGE_VOTE) {
         toVote = (
             <img
-                style={{ flex: 1 }}
+                style={{ flex: 1, padding: '.1em' }}
                 src={toVoteImg}
                 onClick={(e) => { e.preventDefault(); props.navigate(PAGE_VOTE); }}
             />
@@ -26,9 +27,19 @@ export const NavigationComponent: React.SFC<NavigationProps> = (props) => {
     if (props.current !== PAGE_RESULT) {
         toResult = (
             <img
-                style={{ flex: 1 }}
+                style={{ flex: 1, padding: '.1em' }}
                 src={toResultImg}
                 onClick={(e) => { e.preventDefault(); props.navigate(PAGE_RESULT); }}
+            />
+        );
+    }
+    let toInsert;
+    if (props.current !== PAGE_INSERT) {
+        toInsert = (
+            <img
+                style={{ flex: 1, padding: '.1em' }}
+                src={toInsertImg}
+                onClick={(e) => { e.preventDefault(); props.navigate(PAGE_INSERT); }}
             />
         );
     }
@@ -37,6 +48,7 @@ export const NavigationComponent: React.SFC<NavigationProps> = (props) => {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             {toVote}
             {toResult}
+            {toInsert}
         </div>
     );
 };

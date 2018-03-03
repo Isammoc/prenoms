@@ -52,4 +52,22 @@ class AppController @Inject() (voteDAO: VoteDAO, cc: ControllerComponents)(impli
       Ok(Json.toJson(res))
     }
   }
+
+  def insertItem = Action.async(parse.json) { request =>
+    case class InsertRequest(content: String, force: Boolean)
+    implicit val insertReads: Reads[InsertRequest] = (
+      (__ \ "content").read[String] and
+      ((__ \ "force").read[Boolean] orElse Reads.pure(false)))(InsertRequest.apply _)
+    request.body.validate[InsertRequest].fold(
+      error => Future.successful(BadRequest("Unable to parse body")),
+      valid => voteDAO.getItem(valid.content).flatMap(_.fold(
+        voteDAO.insertItem(valid.content).map(_ => NoContent)) { si =>
+          if (!si.vetoed)
+            Future.successful(Forbidden("already exists"))
+          else if(valid.force)
+            voteDAO.unveto(valid.content).map(_ => NoContent)
+          else
+            Future.successful(Conflict("Should be forced"))
+        }))
+  }
 }
